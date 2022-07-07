@@ -12,7 +12,8 @@ cfg = __C
 # Dataset name: flowers, birds
 #__C.DATASET_NAME = 'birds'
 #__C.CONFIG_NAME = ''
-__C.DATA_DIR = '../data/birds'
+#__C.DATA_DIR = '../data/birds'
+__C.DATA_DIR = "/content/drive/MyDrive/_YL/00_Thesis/03_Model/01_MixNMatch/trainWarchitecture/dataset/Architecture"
 #__C.SAVE_DIR = ''
 __C.GPU_ID = '0'
 #__C.CUDA = True
