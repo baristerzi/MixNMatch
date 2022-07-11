@@ -16,7 +16,7 @@ class GLU(nn.Module):
         nc = x.size(1)
         assert nc % 2 == 0, 'channels dont divide 2!'
         nc = int(nc/2)
-        return x[:, :nc] * F.sigmoid(x[:, nc:])
+        return x[:, :nc] * torch.sigmoid(x[:, nc:])
 
 
 def conv3x3(in_planes, out_planes):
@@ -79,7 +79,7 @@ class GET_IMAGE(nn.Module):
 class GET_MASK(nn.Module):
     def __init__(self, ngf):
         super().__init__()
-        self.img = nn.Sequential( conv3x3(ngf, 1), nn.Sigmoid() )
+        self.img = nn.Sequential( conv3x3(ngf, 1), torch.Sigmoid() )
     def forward(self, h_code):
         return self.img(h_code)
 
@@ -274,8 +274,8 @@ class BACKGROUND_D(nn.Module):
                                     nn.LeakyReLU(0.2, inplace=True),
                                     nn.Conv2d(ndf*2, ndf*4, 4, 1, 0, bias=False),
                                     nn.LeakyReLU(0.2, inplace=True) )
-        self.class_logits = nn.Sequential( nn.Conv2d(ndf*4, 1, kernel_size=4, stride=1), nn.Sigmoid() )
-        self.rf_logits = nn.Sequential( nn.Conv2d(ndf*4, 1, kernel_size=4, stride=1), nn.Sigmoid() )
+        self.class_logits = nn.Sequential( nn.Conv2d(ndf*4, 1, kernel_size=4, stride=1), torch.Sigmoid() )
+        self.rf_logits = nn.Sequential( nn.Conv2d(ndf*4, 1, kernel_size=4, stride=1), torch.Sigmoid() )
     def forward(self, x):
         x = self.encode_img(x)
         return self.class_logits(x), self.rf_logits(x)
@@ -306,7 +306,7 @@ class PARENT_D(nn.Module):
                                             nn.BatchNorm2d(ndf * 8),
                                             nn.LeakyReLU(0.2, inplace=True),
                                             nn.Conv2d(ndf * 8, self.code_len, kernel_size=4, stride=4) ) 
-        self.rf_logits = nn.Sequential( nn.Conv2d(ndf*8, 1, kernel_size=4, stride=4), nn.Sigmoid() )
+        self.rf_logits = nn.Sequential( nn.Conv2d(ndf*8, 1, kernel_size=4, stride=4), torch.Sigmoid() )
     def forward(self, x):
         x = self.encode_mask(x)
         return self.code_logits(x).view(-1, self.code_len), self.rf_logits(x)
@@ -337,7 +337,7 @@ class CHILD_D(nn.Module):
                                             nn.BatchNorm2d(ndf * 8),
                                             nn.LeakyReLU(0.2, inplace=True),
                                             nn.Conv2d(ndf * 8, self.code_len, kernel_size=4, stride=4) ) 
-        self.rf_logits = nn.Sequential( nn.Conv2d(ndf*8, 1, kernel_size=4, stride=4), nn.Sigmoid() )
+        self.rf_logits = nn.Sequential( nn.Conv2d(ndf*8, 1, kernel_size=4, stride=4), torch.Sigmoid() )
     def forward(self, x):
         x = self.encode_img(x)
         return self.code_logits(x).view(-1, self.code_len), self.rf_logits(x)
@@ -452,7 +452,7 @@ class ConvT_Block(nn.Module):
         elif activation == 'tanh':
             model.append( nn.Tanh() )
         elif activation == 'sigmoid':
-            model.append( nn.Sigmoid() )  
+            model.append( torch.Sigmoid() )  
         elif activation == 'softmax':
             model.append( nn.Softmax(dim=1) )  
 
@@ -480,7 +480,7 @@ class Conv_Block(nn.Module):
         if activation == 'tanh':
             model.append( nn.Tanh() )
         if activation == 'sigmoid':
-            model.append( nn.Sigmoid() )  
+            model.append( torch.Sigmoid() )  
         if activation == 'softmax':
             model.append( nn.Softmax(dim=1) )  
 
@@ -508,7 +508,7 @@ class Linear_Block(nn.Module):
         if activation == 'tanh':
             model.append( nn.Tanh() )
         if activation == 'sigmoid':
-            model.append( nn.Sigmoid() )  
+            model.append( torch.Sigmoid() )  
         if activation == 'softmax':
             model.append( nn.Softmax(dim=1) )  
 
@@ -665,7 +665,7 @@ class Dis_Dis(nn.Module):
                                     nn.LeakyReLU(0.2, inplace=True),
                                     nn.Conv2d(64, 128, 4, 1, 0, bias=False),
                                     nn.LeakyReLU(0.2, inplace=True) ) 
-        self.rf_logits = nn.Sequential( nn.Conv2d(128, 1, kernel_size=4, stride=1), nn.Sigmoid() )
+        self.rf_logits = nn.Sequential( nn.Conv2d(128, 1, kernel_size=4, stride=1), torch.Sigmoid() )
     def forward(self, x):
         x = F.interpolate( x, [126,126], mode='bilinear', align_corners=True )
         x = self.encode_img(x)

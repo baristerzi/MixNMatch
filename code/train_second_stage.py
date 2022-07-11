@@ -191,9 +191,9 @@ if __name__ == "__main__":
     # prepare output folder for this running and save all files 
     output_dir = make_output_dir()
     shutil.copy2( sys.argv[0], output_dir)
-    shutil.copy2( 'model_train.py', output_dir)
-    shutil.copy2( 'config.py', output_dir)
-    shutil.copy2( 'utils.py', output_dir)
+    shutil.copy2( '/content/MixNMatch/code/model_train.py', output_dir)
+    shutil.copy2( '/content/MixNMatch/code/config.py', output_dir)
+    shutil.copy2( '/content/MixNMatch/code/utils.py', output_dir)
 
     G_DIR = sys.argv[2]
     E_DIR = sys.argv[3]
