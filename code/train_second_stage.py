@@ -8,6 +8,8 @@ from model_train import G_NET, Encoder, Dis_Dis, FeatureExtractor
 from datasets import get_dataloader
 import random
 import torch.nn.functional as F
+from tqdm import tqdm
+
 from utils import *
 cudnn.benchmark = True
 device = torch.device("cuda:" + cfg.GPU_ID)
@@ -125,7 +127,7 @@ class Trainer(object):
         self.L1 = nn.L1Loss()
        
 
-        for epoch in range(cfg.TRAIN.SECOND_MAX_EPOCH):
+        for epoch in tqdm(range(cfg.TRAIN.SECOND_MAX_EPOCH)):
           
 
             for data in self.dataloader:          

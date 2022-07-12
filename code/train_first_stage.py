@@ -13,6 +13,8 @@ import random
 from utils import *
 from itertools import chain
 from copy import deepcopy
+from tqdm import tqdm
+
 cudnn.benchmark = True
 device = torch.device("cuda:" + cfg.GPU_ID)
 
@@ -339,7 +341,7 @@ class Trainer(object):
         # get init avg_G (the param in avg_G is what we want)
         avg_param_G = copy_G_params(self.netG) 
 
-        for epoch in range(cfg.TRAIN.FIRST_MAX_EPOCH):              
+        for epoch in tqdm(range(cfg.TRAIN.FIRST_MAX_EPOCH)):              
 
             for data in self.dataloader:  
                      

@@ -79,7 +79,7 @@ class GET_IMAGE(nn.Module):
 class GET_MASK(nn.Module):
     def __init__(self, ngf):
         super().__init__()
-        self.img = nn.Sequential( conv3x3(ngf, 1), torch.Sigmoid() )
+        self.img = nn.Sequential( conv3x3(ngf, 1), nn.Sigmoid() )
     def forward(self, h_code):
         return self.img(h_code)
 
